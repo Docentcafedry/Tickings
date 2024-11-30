@@ -1,0 +1,35 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: auth-dep
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: auth
+  template:
+    metadata:
+      labels:
+        app: auth
+    spec:
+      containers:
+        - name: auth
+          image: docentcafedry/auth
+          env:
+            - name: jwtSecret
+              valueFrom:
+                secretKeyRef:
+                  name: jwtsecret
+                  key: jwtSecret
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: auth-serv
+spec:
+  type: ClusterIP
+  selector:
+    app: auth
+  ports:
+    - port: 4000
+      targetPort: 4000
