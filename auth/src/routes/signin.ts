@@ -1,11 +1,11 @@
 import express, { Request, Response } from "express";
 import { body } from "express-validator";
-import { validationMiddleware } from "../middlewares/validation";
+import { validationMiddleware } from "@docentav/common";
 import { User } from "../models/user";
-import { BadRequestError } from "../customErrors/request-bad-error";
+import { BadRequestError } from "@docentav/common";
 import { PasswordHash } from "../utils/passwordHash";
 import jwt from "jsonwebtoken";
-import { requestUserMiddleware } from "../middlewares/user-set-request";
+import { requestUserMiddleware } from "@docentav/common";
 
 const router = express.Router();
 

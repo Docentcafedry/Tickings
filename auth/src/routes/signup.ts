@@ -1,12 +1,12 @@
 import express from "express";
 import { body, validationResult } from "express-validator";
 import { Request, Response } from "express";
-import { ValidationCustomError } from "../customErrors/request-validation-error";
-import { DatabaseConnectionError } from "../customErrors/database-connection-error";
+import { ValidationCustomError } from "@docentav/common";
+import { DatabaseConnectionError } from "@docentav/common";
 import { User } from "../models/user";
-import { BadRequestError } from "../customErrors/request-bad-error";
+import { BadRequestError } from "@docentav/common";
 import jwt from "jsonwebtoken";
-import { validationMiddleware } from "../middlewares/validation";
+import { validationMiddleware } from "@docentav/common";
 
 const router = express.Router();
 

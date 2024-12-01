@@ -1,6 +1,6 @@
 import express from "express";
-import { requestUserMiddleware } from "../middlewares/user-set-request";
-import { isAuthenticated } from "../middlewares/isAuthenticated";
+import { requestUserMiddleware } from "@docentav/common";
+import { isAuthenticated } from "@docentav/common";
 
 const router = express.Router();
 
