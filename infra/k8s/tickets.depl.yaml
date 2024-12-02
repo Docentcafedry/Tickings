@@ -1,20 +1,19 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: auth-dep
+  name: tickets-depl
 spec:
-  replicas: 1
   selector:
     matchLabels:
-      app: auth
+      app: tickets
   template:
     metadata:
       labels:
-        app: auth
+        app: tickets
     spec:
       containers:
-        - name: auth
-          image: docentcafedry/auth
+        - name: tickets
+          image: docentcafedry/tickets
           env:
             - name: jwtSecret
               valueFrom:
@@ -22,16 +21,15 @@ spec:
                   name: jwtsecret
                   key: jwtSecret
             - name: mongodb
-              value: "mongodb://mongo-serv:27017/auth"
+              value: "mongodb://mongo-tickets-serv:27017/tickets"
 ---
 apiVersion: v1
 kind: Service
 metadata:
-  name: auth-serv
+  name: tickets-serv
 spec:
-  type: ClusterIP
   selector:
-    app: auth
+    app: tickets
   ports:
     - port: 4000
       targetPort: 4000

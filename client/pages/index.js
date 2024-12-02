@@ -18,7 +18,6 @@ IndexPage.getInitialProps = async (context) => {
   try {
     const resp = await buildClient(context).get("/auth/user/currentuser");
     data = resp.data;
-    console.log("From index initial props");
   } catch (err) {
     console.log(err);
   }

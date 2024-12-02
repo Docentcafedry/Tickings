@@ -38,6 +38,13 @@ spec:
                 name: auth-serv
                 port:
                   number: 4000
+          - pathType: Prefix
+            path: "/tickets"
+            backend:
+              service:
+                name: tickets-serv
+                port:
+                  number: 4000
           - pathType: ImplementationSpecific
             path: "/(.*)"
             backend:

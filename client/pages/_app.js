@@ -15,8 +15,6 @@ MyApp.getInitialProps = async (context) => {
   let pageProps;
   let data;
 
-  console.log("from my app init props");
-
   try {
     const response = await buildClient(context.ctx.req).get(
       "/auth/user/currentuser"

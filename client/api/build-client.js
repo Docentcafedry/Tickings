@@ -1,7 +1,6 @@
 import axios from "axios";
 
 export function buildClient(context) {
-  console.log(context.headers);
   if (typeof window === "undefined") {
     return axios.create({
       baseURL:
