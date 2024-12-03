@@ -1,8 +1,8 @@
 import { MongoMemoryServer } from "mongodb-memory-server";
-import mongoose from "mongoose";
 import request from "supertest";
 import { app } from "../app";
 import jwt from "jsonwebtoken";
+import mongoose from "mongoose";
 
 declare global {
   var getsignincookies: () => string[];
@@ -36,15 +36,9 @@ afterAll(async () => {
 
 global.getsignincookies = () => {
   const email = "docent@protonmail.com";
-  const id = "674dad3bfa38c1561b0b1e2e";
-
-  console.log(process.env.jwtSecret);
+  const id = new mongoose.mongo.ObjectId().toString("hex");
 
   const jwtToken = jwt.sign({ id, email }, process.env.jwtSecret!);
 
-  const session = { jwt: jwtToken };
-
-  const base64 = Buffer.from(JSON.stringify(session)).toString("base64");
-
-  return [`session=${base64}`];
+  return [`session=${jwtToken}`];
 };

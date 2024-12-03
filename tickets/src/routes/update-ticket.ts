@@ -1,12 +1,13 @@
 import express from "express";
-import { body, validationResult } from "express-validator";
 import { Request, Response } from "express";
 import { Ticket } from "../models/ticket";
-import { BadRequestError } from "@docentav/common";
+import { UnknowRouteError } from "@docentav/common";
 import { validationMiddleware } from "@docentav/common";
 import { isAuthenticated } from "@docentav/common";
-import { JwtPayload } from "jsonwebtoken";
 import { requestUserMiddleware } from "@docentav/common";
+import { body } from "express-validator";
+import { JwtPayload } from "jsonwebtoken";
+import { IsNotAuthenticated } from "@docentav/common";
 
 interface IJwtPayload extends JwtPayload {
   id: any;
@@ -14,8 +15,8 @@ interface IJwtPayload extends JwtPayload {
 
 const router = express.Router();
 
-router.post(
-  "/tickets",
+router.put(
+  "/api/tickets/update/:id",
   requestUserMiddleware,
   isAuthenticated,
   [
@@ -28,27 +29,21 @@ router.post(
       .isLength({ min: 1, max: 20 })
       .withMessage("You need provide price"),
   ],
-  validationMiddleware,
   async (req: Request, res: Response) => {
-    const { title, price } = req.body;
-
-    const ticket = await Ticket.findOne({ title });
-
-    if (ticket) {
-      throw new BadRequestError("Such ticket already exists");
+    let ticket;
+    try {
+      ticket = await Ticket.findById(req.params.id);
+    } catch (err) {
+      throw new UnknowRouteError();
     }
-    const payload = req.currentUser as IJwtPayload;
+    const currentUser = req.currentUser as IJwtPayload;
 
-    const newTicket = Ticket.build({
-      title,
-      price,
-      userId: payload.id,
-    });
+    if (ticket?.userId !== currentUser.id) {
+      throw new IsNotAuthenticated();
+    }
 
-    await newTicket.save();
-
-    res.status(201).send(newTicket);
+    res.status(200).send(ticket);
   }
 );
 
-export { router as CreateTicket };
+export { router as UpdateTicketRouter };
