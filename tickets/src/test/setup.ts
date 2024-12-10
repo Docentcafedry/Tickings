@@ -4,6 +4,8 @@ import { app } from "../app";
 import jwt from "jsonwebtoken";
 import mongoose from "mongoose";
 
+jest.mock("../nats-client");
+
 declare global {
   var getsignincookies: () => string[];
 }
@@ -18,6 +20,7 @@ beforeAll(async () => {
 });
 
 beforeEach(async () => {
+  jest.clearAllMocks();
   if (mongoose.connection.db) {
     const collections = await mongoose.connection.db?.collections();
 

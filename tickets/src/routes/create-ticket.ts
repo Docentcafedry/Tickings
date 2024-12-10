@@ -7,6 +7,8 @@ import { validationMiddleware } from "@docentav/common";
 import { isAuthenticated } from "@docentav/common";
 import { JwtPayload } from "jsonwebtoken";
 import { requestUserMiddleware } from "@docentav/common";
+import { TickedCreatedEventPublisher } from "../events/TickedCreatedEventPublisher";
+import { client } from "../nats-client";
 
 interface IJwtPayload extends JwtPayload {
   id: any;
@@ -46,6 +48,11 @@ router.post(
     });
 
     await newTicket.save();
+    await new TickedCreatedEventPublisher(client.client).publish({
+      id: newTicket.id,
+      title: newTicket.title,
+      price: newTicket.price,
+    });
 
     res.status(201).send(newTicket);
   }

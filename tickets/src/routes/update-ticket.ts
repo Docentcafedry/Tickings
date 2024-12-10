@@ -8,6 +8,8 @@ import { requestUserMiddleware } from "@docentav/common";
 import { body } from "express-validator";
 import { JwtPayload } from "jsonwebtoken";
 import { IsNotAuthenticated } from "@docentav/common";
+import { client } from "../nats-client";
+import { TickedUpdatedEventPublisher } from "../events/TicketUpdatedEventPublisher";
 
 interface IJwtPayload extends JwtPayload {
   id: any;
@@ -41,6 +43,15 @@ router.put(
     if (ticket?.userId !== currentUser.id) {
       throw new IsNotAuthenticated();
     }
+
+    ticket!.set({ title: req.body.title, price: req.body.price });
+
+    await ticket?.save();
+    await new TickedUpdatedEventPublisher(client.client).publish({
+      id: ticket!.id,
+      title: ticket!.title,
+      price: ticket!.price,
+    });
 
     res.status(200).send(ticket);
   }

@@ -1,5 +1,8 @@
 import request from "supertest";
 import { app } from "../../app";
+import { client } from "../../nats-client";
+
+jest.mock("../../nats-client.ts");
 
 describe("POST /tickets", () => {
   it("should return error response 401 without authentication", async () => {

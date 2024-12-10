@@ -22,6 +22,14 @@ spec:
                   key: jwtSecret
             - name: mongodb
               value: "mongodb://mongo-tickets-serv:27017/tickets"
+            - name: MY_PODE_NAME
+              valueFrom:
+                fieldRef:
+                  fieldPath: metadata.name
+            - name: NATS_CLUSTER_IP
+              value: "ticketing"
+            - name: NATS_URL
+              value: "http://nats-streaming-serv:4222"
 ---
 apiVersion: v1
 kind: Service
