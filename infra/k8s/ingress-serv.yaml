@@ -67,6 +67,41 @@ spec:
                 port:
                   number: 4000
           - pathType: ImplementationSpecific
+            path: "/api/orders/(.*)"
+            backend:
+              service:
+                name: orders-serv
+                port:
+                  number: 4000
+          - pathType: ImplementationSpecific
+            path: "/api/orders/update/(.*)"
+            backend:
+              service:
+                name: orders-serv
+                port:
+                  number: 4000
+          - pathType: ImplementationSpecific
+            path: "/api/orders/delete/(.*)"
+            backend:
+              service:
+                name: orders-serv
+                port:
+                  number: 4000
+          - pathType: Prefix
+            path: "/api/orders/create"
+            backend:
+              service:
+                name: orders-serv
+                port:
+                  number: 4000
+          - pathType: Prefix
+            path: "/api/orders"
+            backend:
+              service:
+                name: orders-serv
+                port:
+                  number: 4000
+          - pathType: ImplementationSpecific
             path: "/(.*)"
             backend:
               service:

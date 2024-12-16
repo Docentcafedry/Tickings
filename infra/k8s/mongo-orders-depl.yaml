@@ -1,0 +1,27 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: mongo-orders-dep
+spec:
+  selector:
+    matchLabels:
+      app: mongo-orders-app
+  template:
+    metadata:
+      labels:
+        app: mongo-orders-app
+    spec:
+      containers:
+        - name: mongo-orders-app
+          image: mongo
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: mongo-orders-serv
+spec:
+  selector:
+    app: mongo-orders-app
+  ports:
+    - port: 27017
+      targetPort: 27017
