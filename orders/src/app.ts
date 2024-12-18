@@ -3,6 +3,9 @@ import { json } from "body-parser";
 import { errorHandler } from "@docentav/common";
 import { UnknowRouteError } from "@docentav/common";
 import { CreateOrder } from "./routes/create-order";
+import { ShowOrdersRouter } from "./routes/show-orders";
+import { ShowOrderRouter } from "./routes/show-order";
+import { CancelOrderRouter } from "./routes/cancel-order";
 import cookieSession from "cookie-session";
 import express from "express";
 
@@ -18,6 +21,9 @@ app.use(
 );
 
 app.use(CreateOrder);
+app.use(ShowOrdersRouter);
+app.use(CancelOrderRouter);
+app.use(ShowOrderRouter);
 
 app.all("*", async () => {
   throw new UnknowRouteError();

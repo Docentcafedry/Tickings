@@ -1,9 +1,11 @@
 import mongoose from "mongoose";
 import { transform } from "typescript";
+import { TicketDoc } from "./ticket";
+import { OrderStatus } from "@docentav/common";
 
 interface OrderAttrs {
   userId: string;
-  status: string;
+  status: OrderStatus;
   expTime: Date;
   ticket: TicketDoc;
 }
@@ -28,6 +30,7 @@ const orderSchema = new mongoose.Schema(
     status: {
       type: String,
       required: true,
+      default: OrderStatus.OrderCreated,
     },
     expTime: {
       type: mongoose.Schema.Types.Date,
