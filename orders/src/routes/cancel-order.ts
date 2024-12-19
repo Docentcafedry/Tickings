@@ -6,6 +6,8 @@ import { requestUserMiddleware } from "@docentav/common";
 import { JwtPayload } from "jsonwebtoken";
 import { IsNotAuthenticated } from "@docentav/common";
 import { OrderStatus } from "@docentav/common";
+import { OrderCancelledEventPublisher } from "../events/OrderCancelledEventPublisher";
+import { client } from "../nats-client";
 
 interface JwtPayloadWithId extends JwtPayload {
   id: any;
@@ -28,6 +30,11 @@ router.delete(
     order!.status = OrderStatus.OrderCanceled;
 
     await order?.save();
+
+    new OrderCancelledEventPublisher(client.client).publish({
+      id: order?.id,
+      ticket: { id: order?.ticket.id },
+    });
 
     res.status(204).send();
   }

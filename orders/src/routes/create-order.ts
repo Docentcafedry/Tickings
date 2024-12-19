@@ -10,6 +10,8 @@ import { Ticket } from "../models/ticket";
 import { UnknowRouteError } from "@docentav/common";
 import { Order } from "../models/order";
 import { JwtPayload } from "jsonwebtoken";
+import { OrderCreatedEventPublisher } from "../events/OrderCreatedEventPublisher";
+import { client } from "../nats-client";
 
 interface JwtPayloadWithId extends JwtPayload {
   id: any;
@@ -56,6 +58,17 @@ router.post(
     });
 
     await order.save();
+    new OrderCreatedEventPublisher(client.client).publish({
+      id: order.id,
+      status: OrderStatus.OrderCreated,
+      userId: order.userId,
+      expTime: expTime.toISOString(),
+      ticket: {
+        id: order.ticket.id,
+        price: order.ticket.price,
+      },
+    });
+
     res.status(201).send(order);
   }
 );
