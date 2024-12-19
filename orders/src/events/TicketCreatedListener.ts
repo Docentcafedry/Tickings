@@ -4,7 +4,7 @@ import { SubscriptionTypes } from "@docentav/common";
 import { Message } from "node-nats-streaming";
 import { Ticket } from "../models/ticket";
 
-export class TocketCreatedListener extends CustomListener<EventTicketCreated> {
+export class TicketCreatedListener extends CustomListener<EventTicketCreated> {
   subscription = SubscriptionTypes.TicketCreated;
   queueGroup = "order-service";
   durableName = "order-service";
