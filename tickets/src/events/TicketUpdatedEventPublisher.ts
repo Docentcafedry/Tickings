@@ -1,9 +1,9 @@
 import {
   Publisher,
   SubscriptionTypes,
-  EventTicketCreated,
+  EventTicketUpdated,
 } from "@docentav/common";
 
-export class TickedUpdatedEventPublisher extends Publisher<EventTicketCreated> {
+export class TickedUpdatedEventPublisher extends Publisher<EventTicketUpdated> {
   subscription = SubscriptionTypes.TicketUpdated;
 }
