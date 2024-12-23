@@ -2,6 +2,7 @@ import mongoose from "mongoose";
 import { transform } from "typescript";
 import { TicketDoc } from "./ticket";
 import { OrderStatus } from "@docentav/common";
+import { updateIfCurrentPlugin } from "mongoose-update-if-current";
 
 interface OrderAttrs {
   userId: string;
@@ -19,6 +20,7 @@ interface OrderDoc extends mongoose.Document {
   status: string;
   expTime: Date;
   ticket: TicketDoc;
+  version: number;
 }
 
 const orderSchema = new mongoose.Schema(
@@ -53,6 +55,9 @@ const orderSchema = new mongoose.Schema(
 orderSchema.statics.build = function (attr: OrderAttrs) {
   return new Order(attr);
 };
+
+orderSchema.set("versionKey", "version");
+orderSchema.plugin(updateIfCurrentPlugin, { strategy: "version" });
 
 const Order = mongoose.model<OrderDoc, OrderModel>("Order", orderSchema);
 

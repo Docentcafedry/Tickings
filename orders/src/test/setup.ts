@@ -5,6 +5,8 @@ import { app } from "../app";
 import jwt from "jsonwebtoken";
 import { Ticket } from "../models/ticket";
 
+jest.mock("../nats-client");
+
 declare global {
   var signin: () => Promise<string[]>;
   var getsignincookies: () => {

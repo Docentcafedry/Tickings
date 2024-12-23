@@ -2,6 +2,7 @@ import mongoose from "mongoose";
 import { app } from "./app";
 import { client } from "./nats-client";
 import { TicketCreatedListener } from "./events/TicketCreatedListener";
+import { TicketUpdatedListener } from "./events/TicketUpdatedListener";
 
 const start = async () => {
   try {
@@ -30,6 +31,7 @@ const start = async () => {
     await mongoose.connect(process.env.mongodb!);
 
     new TicketCreatedListener(client.client).listen();
+    new TicketUpdatedListener(client.client).listen();
     console.log("Successfully connected to db!");
   } catch (err) {
     console.log("Db connection failed", err);
