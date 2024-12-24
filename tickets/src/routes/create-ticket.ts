@@ -25,10 +25,7 @@ router.post(
       .isString()
       .isLength({ min: 4, max: 15 })
       .withMessage("Invalid title"),
-    body("price")
-      .trim()
-      .isLength({ min: 1, max: 20 })
-      .withMessage("You need provide price"),
+    body("price").isNumeric().withMessage("You need provide price"),
   ],
   validationMiddleware,
   async (req: Request, res: Response) => {

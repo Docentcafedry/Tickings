@@ -1,8 +1,7 @@
 import express from "express";
 import { Request, Response } from "express";
 import { Ticket } from "../models/ticket";
-import { UnknowRouteError } from "@docentav/common";
-import { validationMiddleware } from "@docentav/common";
+import { BadRequestError, UnknowRouteError } from "@docentav/common";
 import { isAuthenticated } from "@docentav/common";
 import { requestUserMiddleware } from "@docentav/common";
 import { body } from "express-validator";
@@ -27,7 +26,7 @@ router.put(
       .isLength({ min: 4, max: 15 })
       .withMessage("Invalid title"),
     body("price")
-      .trim()
+      .isNumeric()
       .isLength({ min: 1, max: 20 })
       .withMessage("You need provide price"),
   ],
@@ -42,6 +41,10 @@ router.put(
 
     if (ticket?.userId !== currentUser.id) {
       throw new IsNotAuthenticated();
+    }
+
+    if (ticket?.orderId) {
+      throw new BadRequestError("This ticket already reserved!");
     }
 
     ticket!.set({ title: req.body.title, price: req.body.price });

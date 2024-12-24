@@ -20,7 +20,11 @@ export class TicketUpdatedListener extends CustomListener<EventTicketUpdated> {
       throw new Error(`Cant find ticket with version, ${data.version - 1}`);
     }
 
-    ticket.set({ title: data.title, price: data.price });
+    ticket.set({
+      title: data.title,
+      price: data.price,
+      orderId: data?.orderId,
+    });
 
     await ticket.save();
 

@@ -21,7 +21,7 @@ router.delete(
   isAuthenticated,
   async (req: Request, res: Response) => {
     const payload = req.currentUser as JwtPayloadWithId;
-    const order = await Order.findById(req.params.orderId);
+    const order = await Order.findById(req.params.orderId).populate("ticket");
 
     if (order?.userId != payload.id) {
       throw new IsNotAuthenticated();

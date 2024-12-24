@@ -1,6 +1,8 @@
 import mongoose from "mongoose";
 import { app } from "./app";
 import { client } from "./nats-client";
+import { OrderCreatedListener } from "./events/OrderCreatedListener";
+import { OrderCanceledListener } from "./events/OrderCanceledListener";
 
 const start = async () => {
   try {
@@ -26,6 +28,9 @@ const start = async () => {
       process.env.MY_PODE_NAME,
       process.env.NATS_URL
     );
+
+    new OrderCreatedListener(client.client).listen();
+    new OrderCanceledListener(client.client).listen();
     await mongoose.connect(process.env.mongodb!);
     console.log("Successfully connected to db!");
   } catch (err) {

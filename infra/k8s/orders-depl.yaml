@@ -37,7 +37,7 @@ metadata:
   name: orders-serv
 spec:
   selector:
-    app: tickets
+    app: orders
   ports:
     - port: 4000
       targetPort: 4000
