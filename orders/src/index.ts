@@ -3,6 +3,8 @@ import { app } from "./app";
 import { client } from "./nats-client";
 import { TicketCreatedListener } from "./events/TicketCreatedListener";
 import { TicketUpdatedListener } from "./events/TicketUpdatedListener";
+import { ExpirationCompleteListener } from "./events/ExpirationCompleteListener";
+import { ChargeCreatedListener } from "./events/ChargeCreatedEventListener";
 
 const start = async () => {
   try {
@@ -32,6 +34,8 @@ const start = async () => {
 
     new TicketCreatedListener(client.client).listen();
     new TicketUpdatedListener(client.client).listen();
+    new ExpirationCompleteListener(client.client).listen();
+    new ChargeCreatedListener(client.client).listen();
     console.log("Successfully connected to db!");
   } catch (err) {
     console.log("Db connection failed", err);
