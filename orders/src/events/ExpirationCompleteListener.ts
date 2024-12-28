@@ -21,6 +21,10 @@ export class ExpirationCompleteListener extends CustomListener<ExpiratonComplete
       throw new Error(`There is no order with id ${orderId}`);
     }
 
+    if (order.status == OrderStatus.OrderCompleted) {
+      msg.ack();
+    }
+
     order.set({ status: OrderStatus.OrderCanceled });
 
     await order.save();

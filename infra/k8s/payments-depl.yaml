@@ -1,0 +1,48 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: payments-depl
+spec:
+  selector:
+    matchLabels:
+      app: payments
+  template:
+    metadata:
+      labels:
+        app: payments
+    spec:
+      containers:
+        - name: payments
+          image: docentcafedry/payments
+          env:
+            - name: jwtSecret
+              valueFrom:
+                secretKeyRef:
+                  name: jwtsecret
+                  key: jwtSecret
+            - name: stripeSecret
+              valueFrom:
+                secretKeyRef:
+                  name: stripe-secret
+                  key: stripe-secret
+            - name: mongodb
+              value: "mongodb://mongo-payments-serv:27017/payments"
+            - name: MY_PODE_NAME
+              valueFrom:
+                fieldRef:
+                  fieldPath: metadata.name
+            - name: NATS_CLUSTER_IP
+              value: "ticketing"
+            - name: NATS_URL
+              value: "http://nats-streaming-serv:4222"
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: payments-serv
+spec:
+  selector:
+    app: payments
+  ports:
+    - port: 4000
+      targetPort: 4000

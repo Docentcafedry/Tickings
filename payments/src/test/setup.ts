@@ -3,11 +3,11 @@ import request from "supertest";
 import { app } from "../app";
 import jwt from "jsonwebtoken";
 import mongoose from "mongoose";
-
+require("dotenv").config();
 jest.mock("../nats-client");
 
 declare global {
-  var getsignincookies: () => string[];
+  var getsignincookies: (userId?: string) => string[];
 }
 
 let mongo: any;
@@ -37,9 +37,9 @@ afterAll(async () => {
   await mongoose.connection.close();
 });
 
-global.getsignincookies = () => {
+global.getsignincookies = (userId?: string) => {
   const email = "docent@protonmail.com";
-  const id = new mongoose.mongo.ObjectId().toString("hex");
+  const id = userId || new mongoose.mongo.ObjectId().toString("hex");
 
   const jwtToken = jwt.sign({ id, email }, process.env.jwtSecret!);
 

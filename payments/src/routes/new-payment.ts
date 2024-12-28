@@ -8,6 +8,11 @@ import { Request, Response } from "express";
 import { Order } from "../models/Order";
 import { UnknowRouteError } from "@docentav/common";
 import { IsNotAuthenticated } from "@docentav/common";
+import { stripe } from "../stripe";
+import { Charge } from "../models/Charge";
+import { client } from "../nats-client";
+import { ChargeCreatedEventPublisher } from "../events/ChargeCreatedPublisher";
+import mongoose from "mongoose";
 
 const router = express.Router();
 
@@ -35,7 +40,33 @@ router.post(
       throw new IsNotAuthenticated();
     }
 
-    res.status(201).send();
+    const charge = await stripe.charges.create({
+      amount: order.price * 10,
+      // @ts-ignore
+      currency: "usd",
+      source: "tok_visa",
+    });
+
+    const payment = Charge.build({
+      orderId: order.id,
+      ticketId: order.ticketId,
+      stripeId: charge.id,
+      // @ts-ignore
+      userId: req.currentUser?.id,
+    });
+
+    await payment.save();
+
+    await new ChargeCreatedEventPublisher(client.client).publish({
+      id: payment.id,
+      stripeId: charge.id,
+      // @ts-ignore
+      userId: req.currentUser?.id,
+      orderId: order.id,
+      ticketId: order.ticketId,
+    });
+
+    res.status(201).send({ success: true });
   }
 );
 

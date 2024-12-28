@@ -1,0 +1,27 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: expiration-depl
+spec:
+  selector:
+    matchLabels:
+      app: expiration
+  template:
+    metadata:
+      labels:
+        app: expiration
+    spec:
+      containers:
+        - name: tickets
+          image: docentcafedry/expiration
+          env:
+            - name: REDIS_HOST
+              value: "redis-serv"
+            - name: MY_PODE_NAME
+              valueFrom:
+                fieldRef:
+                  fieldPath: metadata.name
+            - name: NATS_CLUSTER_IP
+              value: "ticketing"
+            - name: NATS_URL
+              value: "http://nats-streaming-serv:4222"
