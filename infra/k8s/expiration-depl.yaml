@@ -12,7 +12,7 @@ spec:
         app: expiration
     spec:
       containers:
-        - name: tickets
+        - name: expiration
           image: docentcafedry/expiration
           env:
             - name: REDIS_HOST

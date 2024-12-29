@@ -19,6 +19,8 @@ const start = async () => {
       process.env.NATS_URL
     );
 
+    console.log("from expiration");
+
     new OrderCreatedListener(client.client).listen();
   } catch (err) {
     console.log("Db connection failed", err);
