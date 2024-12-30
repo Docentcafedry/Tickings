@@ -1,13 +1,12 @@
 import { useState } from "react";
-import axios from "axios";
-import { useRouter } from "next/navigation";
-import { useRequest } from "../hooks/useRequest";
+import { useRequest } from "../../hooks/useRequest";
 
-export default function SignupPage() {
+export default function SignIn() {
+  console.log(data);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const { errors, requestFunc } = useRequest({
-    url: "/auth/signup",
+  const { requestFunc, errors } = useRequest({
+    url: "/auth/signin",
     method: "post",
     body: { email, password },
     pushPath: "/",
@@ -15,13 +14,15 @@ export default function SignupPage() {
 
   const onSubmit = async (e) => {
     e.preventDefault();
-
     await requestFunc();
+    setEmail("");
+    setPassword("");
   };
+
   return (
     <>
       <div className="container">
-        <h4>Sign Up</h4>
+        <h4>Sign In</h4>
         <form onSubmit={onSubmit}>
           <div className="form-group">
             <label>Email</label>
@@ -41,8 +42,8 @@ export default function SignupPage() {
               onChange={(e) => setPassword(e.target.value)}
             />
           </div>
-          <button type="submit" className="btn btn-primary py-1">
-            Sign up!
+          <button type="submit" className="btn btn-primary">
+            Sign In
           </button>
           {errors.length > 0 && (
             <div className="alert alert-danger" role="alert">

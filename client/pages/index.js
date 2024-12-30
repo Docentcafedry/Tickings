@@ -1,26 +1,37 @@
 import { buildClient } from "../api/build-client";
 
-export default function IndexPage({ data }) {
+export default function IndexPage({ currentUser, data }) {
+  console.log(data);
   return (
     <>
-      <h1>Index page</h1>
-      {data?.email ? (
-        <h4>You are authenticated</h4>
-      ) : (
-        <h4>You are not authenticated</h4>
-      )}
+      <div className="container">
+        <h1>Tickets</h1>
+        <table className="table">
+          <thead>
+            <tr>
+              <td>Title</td>
+              <td>Price</td>
+            </tr>
+          </thead>
+          <tbody>
+            {data &&
+              data.map((ticket) => {
+                return (
+                  <tr key={ticket.id}>
+                    <td>{ticket.title}</td>
+                    <td>{ticket.price}</td>
+                  </tr>
+                );
+              })}
+          </tbody>
+        </table>
+      </div>
     </>
   );
 }
 
 IndexPage.getInitialProps = async (context) => {
-  let data;
-  try {
-    const resp = await buildClient(context).get("/auth/user/currentuser");
-    data = resp.data;
-  } catch (err) {
-    console.log(err);
-  }
+  const response = await buildClient(context.ctx.req).get("/api/tickets");
 
-  return { data };
+  return response.data;
 };

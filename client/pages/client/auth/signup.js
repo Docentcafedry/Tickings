@@ -1,12 +1,13 @@
 import { useState } from "react";
-import { useRequest } from "../hooks/useRequest";
+import axios from "axios";
+import { useRouter } from "next/navigation";
+import { useRequest } from "../../../hooks/useRequest";
 
-export default function SignIn() {
-  console.log(data);
+export default function SignupPage() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const { requestFunc, errors } = useRequest({
-    url: "/auth/signin",
+  const { errors, requestFunc } = useRequest({
+    url: "/auth/signup",
     method: "post",
     body: { email, password },
     pushPath: "/",
@@ -14,15 +15,13 @@ export default function SignIn() {
 
   const onSubmit = async (e) => {
     e.preventDefault();
-    await requestFunc();
-    setEmail("");
-    setPassword("");
-  };
 
+    await requestFunc();
+  };
   return (
     <>
       <div className="container">
-        <h4>Sign In</h4>
+        <h4>Sign Up</h4>
         <form onSubmit={onSubmit}>
           <div className="form-group">
             <label>Email</label>
@@ -42,9 +41,18 @@ export default function SignIn() {
               onChange={(e) => setPassword(e.target.value)}
             />
           </div>
-          <button type="submit" className="btn btn-primary">
-            Sign In
+          <button type="submit" className="btn btn-primary py-1">
+            Sign up!
           </button>
+          {errors.length > 0 && (
+            <div className="alert alert-danger" role="alert">
+              <ul>
+                {errors.map((error) => {
+                  return <li key={error.message}>{error.message}</li>;
+                })}
+              </ul>
+            </div>
+          )}
         </form>
       </div>
     </>

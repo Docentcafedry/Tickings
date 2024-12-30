@@ -1,5 +1,5 @@
 import { useEffect } from "react";
-import { useRequest } from "../hooks/useRequest";
+import { useRequest } from "../../../hooks/useRequest";
 
 export default function SignOut() {
   const { requestFunc } = useRequest({

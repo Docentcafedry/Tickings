@@ -109,6 +109,20 @@ spec:
                 port:
                   number: 4000
           - pathType: ImplementationSpecific
+            path: "/tickets/(.*)"
+            backend:
+              service:
+                name: client-srv
+                port:
+                  number: 3000
+          - pathType: ImplementationSpecific
+            path: "/client/auth/(.*)"
+            backend:
+              service:
+                name: client-srv
+                port:
+                  number: 3000
+          - pathType: ImplementationSpecific
             path: "/(.*)"
             backend:
               service:

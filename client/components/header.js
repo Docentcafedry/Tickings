@@ -1,11 +1,11 @@
 import Link from "next/link";
 
-export default function CustomHeader({ data }) {
-  console.log(data);
+export default function CustomHeader({ currentUser }) {
+  console.log(currentUser);
   const links = [
-    !data?.email && { name: "Sign Up", href: "/signup" },
-    !data?.email && { name: "Sign in", href: "/signin" },
-    data?.email && { name: "Sign out", href: "/signout" },
+    !currentUser?.email && { name: "Sign Up", href: "/signup" },
+    !currentUser?.email && { name: "Sign in", href: "/signin" },
+    currentUser?.email && { name: "Sign out", href: "/signout" },
   ].filter((link) => link);
   return (
     <header className="">
