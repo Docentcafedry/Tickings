@@ -1,7 +1,7 @@
 import { buildClient } from "../api/build-client";
+import Link from "next/link";
 
 export default function IndexPage({ currentUser, data }) {
-  console.log(data);
   return (
     <>
       <div className="container">
@@ -11,6 +11,7 @@ export default function IndexPage({ currentUser, data }) {
             <tr>
               <td>Title</td>
               <td>Price</td>
+              <td>Link</td>
             </tr>
           </thead>
           <tbody>
@@ -20,6 +21,9 @@ export default function IndexPage({ currentUser, data }) {
                   <tr key={ticket.id}>
                     <td>{ticket.title}</td>
                     <td>{ticket.price}</td>
+                    <td>
+                      <Link href={`/tickets/${ticket.id}`}>Show</Link>
+                    </td>
                   </tr>
                 );
               })}

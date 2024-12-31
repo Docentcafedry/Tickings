@@ -46,7 +46,7 @@ router.post(
 
     const expTime = new Date();
 
-    expTime.setSeconds(expTime.getSeconds() + 15 * 60);
+    expTime.setSeconds(expTime.getSeconds() + 6 * 1000);
 
     const payload = req.currentUser as JwtPayloadWithId;
 

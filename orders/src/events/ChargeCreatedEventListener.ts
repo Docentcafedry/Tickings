@@ -24,6 +24,8 @@ export class ChargeCreatedListener extends CustomListener<EventChargeCreated> {
 
     await order.save();
 
+    console.log("from charge created listener");
+
     msg.ack();
   }
 }

@@ -7,15 +7,20 @@ export function useRequest({ url, method, body, pushPath }) {
   const [errors, setErrors] = useState([]);
   const router = useRouter();
 
-  const requestFunc = async () => {
+  const requestFunc = async (addProps = {}) => {
+    let resp;
     try {
-      const resp = await axios[method](url, body);
+      resp = await axios[method](url, { ...body, ...addProps });
       setData(resp.data);
-      router.push(pushPath);
+      if (pushPath) {
+        router.push(pushPath);
+      }
     } catch (err) {
+      console.log(err.response);
       setErrors(err.response.data.errors);
-      console.log(err.response.data);
     }
+
+    return resp.data;
   };
 
   return { data, errors, requestFunc };

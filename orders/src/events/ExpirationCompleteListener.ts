@@ -23,6 +23,7 @@ export class ExpirationCompleteListener extends CustomListener<ExpiratonComplete
 
     if (order.status == OrderStatus.OrderCompleted) {
       msg.ack();
+      return;
     }
 
     order.set({ status: OrderStatus.OrderCanceled });
