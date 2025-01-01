@@ -4,6 +4,11 @@ export default function CustomHeader({ currentUser }) {
   const links = [
     !currentUser?.email && { name: "Sign Up", href: "/client/auth/signup" },
     !currentUser?.email && { name: "Sign in", href: "/client/auth/signin" },
+    currentUser?.email && {
+      name: "Sell tickets",
+      href: "/tickets/create",
+    },
+    currentUser?.email && { name: "My orders", href: "/orders/all" },
     currentUser?.email && { name: "Sign out", href: "/client/auth/signout" },
   ].filter((link) => link);
   return (
