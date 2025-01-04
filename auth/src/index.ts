@@ -4,7 +4,7 @@ import { app } from "./app";
 const startMongoose = async () => {
   try {
     await mongoose.connect(process.env.mongodb!);
-    console.log("Successfully connected to db!");
+    console.log("Successfully connected to db!!!!");
   } catch (err) {
     console.log("Db connection failed", err);
   }
