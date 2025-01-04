@@ -33,6 +33,6 @@ describe("GET /api/tickets/:id", () => {
       .expect(201);
     const ticketId = response.body.id;
 
-    await request(app).get(`/api/tickets/${fakeTicketId}dsadsa`).expect(404);
+    await request(app).get(`/api/tickets/${fakeTicketId}`).expect(404);
   });
 });
