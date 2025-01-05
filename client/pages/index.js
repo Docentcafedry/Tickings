@@ -5,7 +5,7 @@ export default function IndexPage({ currentUser, data }) {
   return (
     <>
       <div className="container">
-        <h1>Tickets</h1>
+        <h2>Tickets</h2>
         <table className="table">
           <thead>
             <tr>
