@@ -11,7 +11,7 @@ const startMongoose = async () => {
 };
 
 app.listen(4000, () => {
-  console.log("Listening at 4000");
+  console.log("Listening at 4000!");
   if (!process.env.jwtSecret) {
     throw new Error("Enviroment veriable of jwt secret code not defined!");
   }
