@@ -3,8 +3,7 @@ import axios from "axios";
 export function buildClient(context) {
   if (typeof window === "undefined") {
     return axios.create({
-      baseURL:
-        "http://ingress-nginx-controller.ingress-nginx.svc.cluster.local",
+      baseURL: "http://ticeting-app.art/",
       headers: context.headers,
     });
   } else {
