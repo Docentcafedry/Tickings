@@ -7,7 +7,7 @@ metadata:
     nginx.ingress.kubernetes.io/use-regex: "true"
 spec:
   rules:
-    - host: ticeting-app.art
+    - host: www.ticeting-app.art
       http:
         paths:
           - pathType: Prefix
@@ -142,7 +142,7 @@ kind: Service
 metadata:
   annotations:
     service.beta.kubernetes.io/do-loadbalancer-enable-proxy-protocol: "true"
-    service.beta.kubernetes.io/do-loadbalancer-hostname: "www.ticeting-app.art"
+    service.beta.kubernetes.io/do-loadbalancer-hostname: "www.ticketing-app-prod.xyz"
   labels:
     helm.sh/chart: ingress-nginx-2.0.3
     app.kubernetes.io/name: ingress-nginx
@@ -159,11 +159,11 @@ spec:
     - name: http
       port: 80
       protocol: TCP
-      targetPort: 80
+      targetPort: http
     - name: https
       port: 443
       protocol: TCP
-      targetPort: 443
+      targetPort: https
   selector:
     app.kubernetes.io/name: ingress-nginx
     app.kubernetes.io/instance: ingress-nginx
