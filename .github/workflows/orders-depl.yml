@@ -1,0 +1,24 @@
+name: orders-depl
+
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - "orders/**"
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - run: cd auth && docker build -t docentcafedry/orders .
+      - run: docker login -u $DOCKER_USERNAME -p $DOCKER_PASSWORD
+        env:
+          DOCKER_USERNAME: ${{ secrets.DOCKER_USERNAME }}
+          DOCKER_PASSWORD: ${{ secrets.DOCKER_PASSWORD }}
+      - run: docker push docentcafedry/orders
+      - uses: digitalocean/action-doctl@v2
+        with:
+          token: ${{ secrets.YOUR_DIGITALOCEAN_ACCESS_TOKEN_VARIABLE_NAME }}
+      - run: doctl kubernetes cluster kubeconfig save ticketing-cluster
+      - run: kubectl rollout restart deployment orders-depl

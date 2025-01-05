@@ -1,0 +1,19 @@
+name: manifests-depl
+
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - "infra/k8s/dep/**"
+      - "infra/k8s/general/**"
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: digitalocean/action-doctl@v2
+        with:
+          token: ${{ secrets.YOUR_DIGITALOCEAN_ACCESS_TOKEN_VARIABLE_NAME }}
+      - run: doctl kubernetes cluster kubeconfig save ticketing-cluster
+      - run: kubectl apply -f infra/k8s/general && kubectl apply -f infra/k8s/dep
